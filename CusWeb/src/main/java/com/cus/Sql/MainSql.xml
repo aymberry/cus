@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+	"-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mainpage">
+	<sql id="selectField">
+		c.busi_num as bnum, custom as cname, short as shrt, ceo, 
+		charge_person, busi_condition, item, post_num, addr1, 
+		addr2, tel, fax, homepage, co_yn, foreign_yn, tax_yn, 
+		country_eng, country_kor, special_relation, trade_stop, 
+		contract_period_s, contract_period_e, regi_info_man, 
+		regi_info_date, modi_info_man, modi_info_date, factory, 
+		trade_bank, account_num
+	</sql>
+
+
+<!-- 검색질의 -->
+	<select id="searchproc" resultType="mVo" parameterType="String">
+		select
+			busi_num as bnum, custom as cname	
+		from	custom
+		where	busi_num = #{what}
+	</select>		
+
+<!-- 상세검색 -->
+	<select id="detailview" resultType="mVo" parameterType="String">
+		select 
+			<include refid="selectField" />
+		from 
+			custom c, account a
+		where 
+			c.busi_num = a.busi_num
+			and a.busi_num = #{bnum}
+	</select>
+			
+<!-- 수정 -->
+	<update id="updateproc" parameterType="mVo">
+		update
+			custom
+		set
+			a.busi_num as bnum	= #{bnum},
+			custom as cname		= #{cname}, 
+			short as shrt		= #{shrt}, 
+			ceo					= #{ceo}, 
+			charge_person		= #{charge_person}, 
+			busi_condition		= #{busi_condition}, 
+			item				= #{item}, 
+			post_num			= #{post_num}, 
+			addr1				= #{addr1}, 
+			addr2				= #{addr2}, 
+			tel					= #{tel}, 
+			fax					= #{fax}, 
+			homepage			= #{homepage}, 
+			co_yn				= #{co_yn}, 
+			foreign_yn			= #{foreign_yn}, 
+			tax_yn				= #{tax_yn}, 
+			country_eng			= #{country_eng}, 
+			country_kor			= #{country_kor}, 
+			special_relation	= #{special_relation}, 
+			trade_stop			= #{trade_stop}, 
+			contract_period_s	= #{contract_period_s}, 
+			contract_period_e	= #{contract_period_e}, 
+			regi_info_man		= #{regi_info_man},
+			regi_info_date		= #{regi_info_date}, 
+			modi_info_man		= #{modi_info_man}, 
+			modi_info_date		= sysdate, 
+			factory				= #{factory}, 
+			trade_bank			= #{trade_bank}, 
+			account_num			= #{account_num}
+		from 
+			custom c, account a
+		where
+			c.busi_num = a.busi_num
+			and a.busi_num = #{bnum}			
+	</update>
+</mapper>
